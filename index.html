@@ -1,0 +1,84 @@
+<!--
+ * @Date: 2020-05-07 11:38:02
+ * @LastEditors: fangbao
+ * @LastEditTime: 2020-05-07 15:44:53
+ * @FilePath: /xt-crm/Users/fangbao/Documents/fangbao/micro-service/index.html
+ -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="https://test1-supplier.hzxituan.com/css/app.2224c453.css">
+  <script src="https://unpkg.com/universal-router/universal-router.min.js"></script>
+</head>
+<body>
+  <button onclick="goWms()">
+    go wms
+  </button>
+  <div id="app"></div>
+  <div id="loading" class="loading" style="display: none;">
+    <main class="wrapper">
+      <div class="loading-wrapper">
+        <div class="ant-spin ant-spin-spinning ant-spin-show-text">
+          <span class="ant-spin-dot ant-spin-dot-spin">
+            <i class="ant-spin-dot-item"></i>
+            <i class="ant-spin-dot-item"></i>
+            <i class="ant-spin-dot-item"></i>
+            <i class="ant-spin-dot-item"></i>
+          </span>
+          <div class="ant-spin-text">加载中...</div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script>
+    function loadjs (src) {
+      const script = document.createElement('script');
+      script.setAttribute('src', src);
+      script.setAttribute('charset', 'utf-8');
+      document.body.append(script);
+      const el = document.createElement('div');
+      // el.innerHTML = 'abc'
+      // document.body.append(el);
+    }
+  </script>
+  <script>
+    const routes = [
+      {
+        path: '', // optional
+        action: () => `<h1>Home</h1>`,
+      },
+      {
+        path: '/posts',
+        action: () => console.log('checking child routes for /posts'),
+        children: [
+          {
+            path: '', // optional, matches both "/posts" and "/posts/"
+            action: () => `<h1>Posts</h1>`,
+          },
+          {
+            path: '/:id',
+            action: (context) => {
+              loadjs('https://test1-wms.hzxituan.com/js/common-14d648473a7b5446c6a2.bundle.js')
+              loadjs('https://test1-wms.hzxituan.com/js/app-14d648473a7b5446c6a2.bundle.js')
+              // return '<div id="root">xxxx</div>'
+              console.log(context, 'context')
+              // return
+            }
+          },
+        ],
+      },
+    ]
+
+    function goWms () {
+      const router = new UniversalRouter(routes)
+      router.resolve('/posts/323').then(html => {
+      console.log(html, 'html')
+      document.body.innerHTML = html // renders: <h1>Posts</h1>
+    })
+    }
+  </script>
+</body>
+</html>
